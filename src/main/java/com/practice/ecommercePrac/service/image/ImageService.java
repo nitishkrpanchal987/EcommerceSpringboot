@@ -7,6 +7,8 @@ import com.practice.ecommercePrac.model.Product;
 import com.practice.ecommercePrac.repository.ImageRepository;
 import com.practice.ecommercePrac.service.product.ProductService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -17,10 +19,12 @@ import java.util.List;
 
 @AllArgsConstructor
 public class ImageService implements IImageService{
+    private static final Logger logger = LoggerFactory.getLogger(ImageService.class);
     private ImageRepository imageRepository;
     private ProductService productService;
     @Override
     public Image getImageById(Long id) {
+        logger.info("inside id method");
         return imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException("Image not found!!"));
     }
 
