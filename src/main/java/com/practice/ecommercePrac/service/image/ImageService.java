@@ -20,12 +20,10 @@ import java.util.List;
 
 @AllArgsConstructor
 public class ImageService implements IImageService{
-    private final static Logger logger = LoggerFactory.getLogger(ImageService.class);
     private ImageRepository imageRepository;
     private ProductService productService;
     @Override
     public Image getImageById(Long id) {
-        logger.info("Inside get by id");
         return imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException("Image not found!!"));
     }
 
