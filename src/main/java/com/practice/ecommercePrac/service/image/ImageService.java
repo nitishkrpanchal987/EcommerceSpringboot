@@ -7,9 +7,6 @@ import com.practice.ecommercePrac.model.Product;
 import com.practice.ecommercePrac.repository.ImageRepository;
 import com.practice.ecommercePrac.service.product.ProductService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.LoggerFactoryFriend;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +15,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 @AllArgsConstructor
-public class ImageService implements IImageService{
+public class ImageService implements IImageService {
     private ImageRepository imageRepository;
     private ProductService productService;
+
     @Override
     public Image getImageById(Long id) {
         return imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException("Image not found!!"));
@@ -30,15 +29,16 @@ public class ImageService implements IImageService{
 
     @Override
     public void deleteImageById(Long id) {
-        imageRepository.findById(id).ifPresentOrElse(imageRepository::delete, () -> new ImageNotFoundException("Image not found!!"));
+        imageRepository.findById(id).ifPresentOrElse(imageRepository::delete,
+                () -> new ImageNotFoundException("Image not found!!"));
     }
 
     @Override
     public List<ImageDto> SaveImage(List<MultipartFile> files, Long productId) {
         Product product = productService.getProductById(productId);
         List<ImageDto> savedImageDtos = new ArrayList<>();
-        for(MultipartFile file:files){
-            try{
+        for (MultipartFile file : files) {
+            try {
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());

@@ -1,5 +1,6 @@
 package com.practice.ecommercePrac.service.product;
 
+import com.practice.ecommercePrac.dto.ProductDto;
 import com.practice.ecommercePrac.model.Product;
 import com.practice.ecommercePrac.request.ProductAddRequest;
 import com.practice.ecommercePrac.request.ProductUpdateRequest;
@@ -21,4 +22,8 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String category, String name);
     Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }

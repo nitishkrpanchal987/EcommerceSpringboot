@@ -1,13 +1,18 @@
 package com.practice.ecommercePrac.service.product;
 
+import com.practice.ecommercePrac.dto.ImageDto;
+import com.practice.ecommercePrac.dto.ProductDto;
 import com.practice.ecommercePrac.exceptions.ProductNotFoundException;
 import com.practice.ecommercePrac.model.Category;
+import com.practice.ecommercePrac.model.Image;
 import com.practice.ecommercePrac.model.Product;
 import com.practice.ecommercePrac.repository.CategoryRepository;
+import com.practice.ecommercePrac.repository.ImageRepository;
 import com.practice.ecommercePrac.repository.ProductRepository;
 import com.practice.ecommercePrac.request.ProductAddRequest;
 import com.practice.ecommercePrac.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +24,8 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
     @Override
     public Product addProduct(ProductAddRequest request) {
         // if category found in DB then save new product otherwise save new category and product
@@ -103,5 +110,21 @@ public class ProductService implements IProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+      return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }
