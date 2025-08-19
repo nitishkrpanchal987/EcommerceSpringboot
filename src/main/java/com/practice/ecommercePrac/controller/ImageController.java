@@ -9,7 +9,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,30 +49,32 @@ public class ImageController {
     }
 
     @PutMapping("/image/{imageId}/update")
-    public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file){
+    public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file) {
         Image image = imageService.getImageById(imageId);
         try {
-            if(image != null){
+            if (image != null) {
                 imageService.updateImage(file, imageId);
                 return ResponseEntity.ok(new ApiResponse("update success", null));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Update failed", HttpStatus.INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse("Update failed", HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @DeleteMapping("/image/{imageId}/delete")
-    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId){
+    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
         Image image = imageService.getImageById(imageId);
         try {
-            if(image != null){
+            if (image != null) {
                 imageService.deleteImageById(imageId);
                 return ResponseEntity.ok(new ApiResponse("delete success", null));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("delete failed", HttpStatus.INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse("delete failed", HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

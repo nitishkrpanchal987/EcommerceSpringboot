@@ -2,10 +2,6 @@ package com.practice.ecommercePrac.dto;
 
 import com.practice.ecommercePrac.model.Category;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.math.BigDecimal;
