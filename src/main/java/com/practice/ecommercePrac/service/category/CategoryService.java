@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService{
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()-> new CategoryNotFoundException("Category not found!!"));

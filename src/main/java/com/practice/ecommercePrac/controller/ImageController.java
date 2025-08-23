@@ -41,7 +41,8 @@ public class ImageController {
         ByteArrayResource resource = new ByteArrayResource(
                 image.getImage().getBytes(1, (int) image.getImage().length()));
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFileName() + "\"");
+        // headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+        // image.getFileName() + "\"");
 
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType()))
                 .headers(headers)
