@@ -1,6 +1,9 @@
 package com.practice.ecommercePrac.service.cart;
 
 import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.stereotype.Service;
 
 import com.practice.ecommercePrac.exceptions.ResourceNotFoundException;
 import com.practice.ecommercePrac.model.Cart;
@@ -9,15 +12,16 @@ import com.practice.ecommercePrac.repository.CartRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public class CartService implements ICartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final AtomicLong cartIdGenerator = new AtomicLong(0);
 
     @Override
     public Cart getCart(Long id) {
-        // TODO Auto-generated method stub
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("cart does not exists"));
         BigDecimal totalAmount = cart.getTotalAmount();
@@ -39,4 +43,11 @@ public class CartService implements ICartService {
         return cart.getTotalAmount();
     }
 
+    @Override
+    public Long initializeNewCart() {
+        Cart newCart = new Cart();
+        Long newCartId = cartIdGenerator.incrementAndGet();
+        newCart.setId(newCartId);
+        return cartRepository.save(newCart).getId();
+    }
 }
