@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.sql.Blob;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
@@ -17,6 +19,7 @@ public class Image {
     private String fileName;
     private String fileType;
     @Lob
+    @JsonIgnore
     private Blob image; // it's a part of JDBC API and is defined in java.sql
     private String downloadUrl;
 

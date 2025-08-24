@@ -10,6 +10,7 @@ import com.practice.ecommercePrac.model.Cart;
 import com.practice.ecommercePrac.repository.CartItemRepository;
 import com.practice.ecommercePrac.repository.CartRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +31,7 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @Transactional
     public void clearCart(Long id) {
         Cart cart = getCart(id);
         cartItemRepository.deleteAllByCartId(id);
@@ -47,7 +49,14 @@ public class CartService implements ICartService {
     public Long initializeNewCart() {
         Cart newCart = new Cart();
         Long newCartId = cartIdGenerator.incrementAndGet();
-        newCart.setId(newCartId);
+
+        // newCart.setId(newCartId);
+        // System.out.println(newCartId);
         return cartRepository.save(newCart).getId();
+    }
+
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 }
