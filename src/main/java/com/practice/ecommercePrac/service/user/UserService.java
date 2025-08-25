@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import com.practice.ecommercePrac.dto.UserDto;
 import com.practice.ecommercePrac.exceptions.AlreadyExistsException;
