@@ -5,9 +5,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.practice.ecommercePrac.dto.OrderDto;
 import com.practice.ecommercePrac.enums.OrderStatus;
+import com.practice.ecommercePrac.exceptions.ResourceNotFoundException;
 import com.practice.ecommercePrac.model.Cart;
 import com.practice.ecommercePrac.model.Order;
 import com.practice.ecommercePrac.model.OrderItem;
@@ -24,6 +27,7 @@ public class OrderService implements IOrderService {
     private final ProductRepository productRepository;
     private final ICartService cartService;
     private final OrderRepository orderRepository;
+    private final ModelMapper mapper;
 
     @Override
     public Order placeOrder(Long userId) {
@@ -61,14 +65,17 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getOrder(Long orderId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'placeOrder'");
+    public OrderDto getOrder(Long orderId) {
+        return orderRepository.findById(orderId).map(this :: convertToDto).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<OrderDto> getUserOrders(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream().map(this :: convertToDto).toList();
     }
 
+    private OrderDto convertToDto(Order order){
+        return mapper.map(order, OrderDto.class);
+    }
 }

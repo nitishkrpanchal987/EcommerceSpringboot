@@ -23,8 +23,7 @@ public class CartItemService implements ICartItemService {
     private final CartRepository cartRepository;
 
     @Override
-    public void addItemToCart(Long cartId, Long productId, int quantity) {
-        Cart cart = cartService.getCart(cartId);
+    public void addItemToCart(Cart cart, Long productId, int quantity) {
         Product product = productService.getProductById(productId);
         CartItem cartItem = cart.getItems().stream()
                 .filter(item -> item.getProduct().getId().equals(product.getId()))

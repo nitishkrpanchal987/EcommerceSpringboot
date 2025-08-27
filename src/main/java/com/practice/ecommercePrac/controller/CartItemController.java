@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.practice.ecommercePrac.model.Cart;
+import com.practice.ecommercePrac.model.User;
+import com.practice.ecommercePrac.repository.UserRepository;
 import com.practice.ecommercePrac.response.ApiResponse;
 import com.practice.ecommercePrac.service.cart.ICartItemService;
 import com.practice.ecommercePrac.service.cart.ICartService;
+import com.practice.ecommercePrac.service.user.IUserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,15 +26,15 @@ import lombok.RequiredArgsConstructor;
 public class CartItemController {
     private final ICartItemService cartItemService;
     private final ICartService cartService;
+    private final IUserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId, @RequestParam Long productId,
+    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long productId,
             @RequestParam Integer quantity) {
         try {
-            if (cartId == null) {
-                cartId = cartService.initializeNewCart();
-            }
-            cartItemService.addItemToCart(cartId, productId, quantity);
+            User user = userService.getUserById(1L);
+            Cart cart = cartService.initializeNewCart(user);
+            cartItemService.addItemToCart(cart, productId, quantity);
             return ResponseEntity.ok(new ApiResponse("Added successfully", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));

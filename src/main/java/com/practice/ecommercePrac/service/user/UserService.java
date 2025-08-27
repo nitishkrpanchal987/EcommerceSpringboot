@@ -3,6 +3,8 @@ package com.practice.ecommercePrac.service.user;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.practice.ecommercePrac.dto.UserDto;
@@ -60,4 +62,13 @@ public class UserService implements IUserService {
     public UserDto convertUserToDto(User user) {
         return modelMapper.map(user, UserDto.class);
     }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return userRepository.findByEmail(email);
+    }
+
+    
 }
