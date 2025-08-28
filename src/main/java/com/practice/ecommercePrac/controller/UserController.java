@@ -39,7 +39,6 @@ public class UserController {
     public ResponseEntity<ApiResponse> createUser(@RequestBody CreateUserRequest user) {
         try {
             User createdUser = userService.createUser(user);
-
             return ResponseEntity.ok(new ApiResponse("User created successfully", createdUser));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ApiResponse(e.getMessage(), null));

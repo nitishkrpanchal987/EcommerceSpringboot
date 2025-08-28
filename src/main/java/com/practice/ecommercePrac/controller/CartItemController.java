@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.ecommercePrac.model.Cart;
 import com.practice.ecommercePrac.model.User;
-import com.practice.ecommercePrac.repository.UserRepository;
 import com.practice.ecommercePrac.response.ApiResponse;
 import com.practice.ecommercePrac.service.cart.ICartItemService;
 import com.practice.ecommercePrac.service.cart.ICartService;
